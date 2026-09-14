@@ -71,19 +71,19 @@ const Technologies = () => {
     };
 
     return (
-        <section id="technologies" className="bg-white px-6 pb-20 pt-4">
+        <section id="technologies" className="bg-white px-3 pb-10 pt-4 sm:px-6 sm:pb-20 sm:pt-4">
             <div className="mx-auto max-w-[835px]">
                 <div className="mb-5">
-                    <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
+                    <h2 className="text-center text-xl font-extrabold tracking-tight text-slate-900 sm:text-left sm:text-2xl">
                         Explore the <span className="text-[#d93c9b]">Technologies</span>
                     </h2>
-                    <p className="mt-1 text-[10px] text-slate-400">
+                    <p className="mt-1 text-center text-[9px] text-slate-400 sm:text-left sm:text-[10px]">
                         Pick one technology per category to build your ideal stack.
                     </p>
                 </div>
 
-                <div className="grid items-start gap-4 lg:grid-cols-[1fr_150px]">
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid items-start gap-4 md:grid-cols-[1fr_150px]">
+                    <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
                         {isLoading ? (
                             <div className="col-span-full flex min-h-[180px] items-center justify-center gap-3 rounded-lg border border-slate-100 text-sm text-slate-500">
                                 <span
