@@ -1,10 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { technologies } from "../data/technologies";
+import type { Technology } from "../data/technologies";
+
+const technologiesUrl = new URL("../data/technologies.json", import.meta.url).href;
 
 const Technologies = () => {
+    const [technologies, setTechnologies] = useState<Technology[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState("");
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+    useEffect(() => {
+        const loadTechnologies = async () => {
+            try {
+                const response = await fetch(technologiesUrl);
+
+                if (!response.ok) {
+                    throw new Error("Unable to load technologies.");
+                }
+
+                const data = (await response.json()) as Technology[];
+                setTechnologies(data);
+            } catch {
+                setLoadError("Unable to load technologies. Please try again.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        void loadTechnologies();
+    }, []);
 
     const selectedTechnologies = technologies.filter((technology) =>
         selectedIds.includes(technology.id),
@@ -58,7 +84,19 @@ const Technologies = () => {
 
                 <div className="grid items-start gap-4 lg:grid-cols-[1fr_150px]">
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        {technologies.map((technology) => {
+                        {isLoading ? (
+                            <div className="col-span-full flex min-h-[180px] items-center justify-center gap-3 rounded-lg border border-slate-100 text-sm text-slate-500">
+                                <span
+                                    className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 border-t-[#d91b7e]"
+                                    aria-hidden="true"
+                                />
+                                <span>Loading technologies...</span>
+                            </div>
+                        ) : loadError ? (
+                            <p role="alert" className="col-span-full rounded-lg border border-rose-100 bg-rose-50 p-5 text-sm text-rose-600">
+                                {loadError}
+                            </p>
+                        ) : technologies.map((technology) => {
                             const isSelected = selectedIds.includes(technology.id);
 
                             return (
