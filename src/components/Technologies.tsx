@@ -93,18 +93,7 @@ const Technologies = () => {
                     </div>
 
                     <aside className="rounded-lg border border-slate-100 p-3 shadow-[0_3px_12px_rgba(15,23,42,0.04)]">
-                        <div className="flex items-center justify-between gap-2">
-                            <h3 className="text-[10px] font-bold text-slate-900">Your Stack</h3>
-                            {selectedTechnologies.length > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={() => setSelectedIds([])}
-                                    className="text-[8px] font-medium text-rose-500 hover:text-rose-700"
-                                >
-                                    Remove All
-                                </button>
-                            )}
-                        </div>
+                        <h3 className="text-[10px] font-bold text-slate-900">Your Stack</h3>
                         <p className="mt-1 text-[8px] text-slate-400">
                             {selectedTechnologies.length === 0
                                 ? "No technologies selected yet."
@@ -138,6 +127,15 @@ const Technologies = () => {
                                 ))
                             )}
                         </div>
+                        {selectedTechnologies.length > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => setSelectedIds([])}
+                                className="mt-3 h-7 w-full rounded-md border border-rose-200 bg-rose-50/30 text-[9px] font-semibold text-[#7f174f] transition-colors hover:bg-rose-50"
+                            >
+                                Remove All
+                            </button>
+                        )}
                     </aside>
                 </div>
             </div>
