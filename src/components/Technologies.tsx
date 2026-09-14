@@ -1,26 +1,47 @@
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { technologies } from "../data/technologies";
 
 const Technologies = () => {
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
-    const [duplicateMessage, setDuplicateMessage] = useState("");
 
     const selectedTechnologies = technologies.filter((technology) =>
         selectedIds.includes(technology.id),
     );
 
     const addTechnology = (id: string) => {
-        if (selectedIds.includes(id)) {
-            setDuplicateMessage("This technology is already in your stack.");
+        const technology = technologies.find((item) => item.id === id);
+
+        if (!technology) {
             return;
         }
 
-        setDuplicateMessage("");
+        if (selectedIds.includes(id)) {
+            toast.warning(`${technology.name} is already in your stack.`);
+            return;
+        }
+
         setSelectedIds((currentIds) => [...currentIds, id]);
+        toast.success(`${technology.name} added to your stack.`);
     };
 
     const removeTechnology = (id: string) => {
+        const technology = technologies.find((item) => item.id === id);
+
         setSelectedIds((currentIds) => currentIds.filter((currentId) => currentId !== id));
+        if (technology) {
+            toast.info(`${technology.name} removed from your stack.`);
+        }
+    };
+
+    const removeAllTechnologies = () => {
+        if (selectedTechnologies.length === 0) {
+            return;
+        }
+
+        setSelectedIds([]);
+        toast.info("All technologies removed from your stack.");
     };
 
     return (
@@ -33,11 +54,6 @@ const Technologies = () => {
                     <p className="mt-1 text-[10px] text-slate-400">
                         Pick one technology per category to build your ideal stack.
                     </p>
-                    {duplicateMessage && (
-                        <p role="alert" className="mt-2 text-[10px] font-medium text-rose-500">
-                            {duplicateMessage}
-                        </p>
-                    )}
                 </div>
 
                 <div className="grid items-start gap-4 lg:grid-cols-[1fr_150px]">
@@ -130,7 +146,7 @@ const Technologies = () => {
                         {selectedTechnologies.length > 0 && (
                             <button
                                 type="button"
-                                onClick={() => setSelectedIds([])}
+                                onClick={removeAllTechnologies}
                                 className="mt-3 h-7 w-full rounded-md border border-rose-200 bg-rose-50/30 text-[9px] font-semibold text-[#7f174f] transition-colors hover:bg-rose-50"
                             >
                                 Remove All
@@ -139,6 +155,15 @@ const Technologies = () => {
                     </aside>
                 </div>
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2200}
+                hideProgressBar
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+                theme="light"
+            />
         </section>
     );
 };
